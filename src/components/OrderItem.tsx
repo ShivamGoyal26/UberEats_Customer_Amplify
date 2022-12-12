@@ -8,7 +8,9 @@ import {navigate} from '../utils/routerServices';
 
 const OrderItem = (props: any) => {
   return (
-    <Pressable onPress={() => navigate('OrderDelivery')} style={styles.main}>
+    <Pressable
+      onPress={() => navigate('OrderDelivery', {item: props.item})}
+      style={styles.main}>
       <Image source={{uri: props.item.Restaurant.image}} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.title} numberOfLines={2}>
