@@ -1,3 +1,5 @@
 export default {
-    white: "#fff"
-}
+  white: '#fff',
+  black: '#000',
+  green: '#3FC060',
+};
