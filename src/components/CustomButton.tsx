@@ -5,7 +5,10 @@ import {getScreenHeight} from '../utils/domUtils';
 
 const CustomButton = (props: any) => {
   return (
-    <TouchableOpacity style={styles.screen} onPress={props.action}>
+    <TouchableOpacity
+      disabled={props.disabled}
+      style={{...styles.screen, backgroundColor: props.color}}
+      onPress={props.action}>
       <Text style={styles.title}>{props.title}</Text>
     </TouchableOpacity>
   );
@@ -16,7 +19,6 @@ const styles = StyleSheet.create({
     height: getScreenHeight(6),
     borderRadius: getScreenHeight(1),
     width: '100%',
-    backgroundColor: Colors.green,
     justifyContent: 'center',
     alignItems: 'center',
   },

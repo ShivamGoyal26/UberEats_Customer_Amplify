@@ -18,19 +18,68 @@ import {CustomButton} from '../../components';
 import Colors from '../../constants/Colors';
 import {getScreenHeight} from '../../utils/domUtils';
 import Images from '../../constants/Images';
+import MapViewDirections from 'react-native-maps-directions';
+import {goBack} from '../../utils/routerServices';
+
+const ORDER_STATUS = {
+  READY_FOR_PICKUP: 'READY_FOR_PICKUP',
+  ACCEPTED: 'ACCEPTED',
+  PICKED_UP: 'PICKED_UP',
+};
 
 const OrderDelivery = (props: any) => {
   const order = props.route.params.item;
   const {height, width} = useWindowDimensions();
-  const bottomSheetRef = useRef(null);
+
+  const restaurantLocation = useMemo(() => {
+    return {
+      latitude: order.Restaurant.lat,
+      longitude: order.Restaurant.lng,
+    };
+  }, []);
+
+  const deliveryLocation = useMemo(() => {
+    return {
+      latitude: order.User.lat,
+      longitude: order.User.lng,
+    };
+  }, []);
+
+  const bottomSheetRef: any = useRef(null);
+  const mapRef: any = useRef(null);
   // variables
   const snapPoints = useMemo(() => ['12%', '90%'], []);
 
   const [driverLocation, setDriverLocation]: any = useState(null);
+  const [totalMinutes, setTotalMinutes] = useState(0);
+  const [totalKm, setTotalKm] = useState(0);
+  const [deliveryStatus, setDeliveryStatus] = useState(
+    ORDER_STATUS.READY_FOR_PICKUP,
+  );
+  const [isDriverClose, setIsDriverClose] = useState(false);
 
-  console.log(order.Restaurant.lat);
   useEffect(() => {
     oneTimePickLocation();
+
+    const watchID = Geolocation.watchPosition(
+      position => {
+        console.log('updated location', position.coords);
+        setDriverLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      error => {
+        // See error code charts below.
+        console.log('>>> Result from Location Lib', error.code, error.message);
+        if (error.code === 2) {
+          Alert.alert('Location provider not available');
+        }
+      },
+      // fastestInterval ==> after this much miliseconds it will check
+      {enableHighAccuracy: true, fastestInterval: 5000, distanceFilter: 20},
+    );
+    return () => Geolocation.clearWatch(watchID);
   }, []);
 
   const oneTimePickLocation = useCallback(async () => {
@@ -52,6 +101,51 @@ const OrderDelivery = (props: any) => {
     );
   }, []);
 
+  const onButtonPressed = () => {
+    if (deliveryStatus === ORDER_STATUS.READY_FOR_PICKUP) {
+      bottomSheetRef.current.collapse();
+      mapRef.current.animateToRegion({
+        latitude: driverLocation.latitude,
+        longitude: driverLocation.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+      setDeliveryStatus(ORDER_STATUS.ACCEPTED);
+    }
+    if (deliveryStatus === ORDER_STATUS.ACCEPTED) {
+      setDeliveryStatus(ORDER_STATUS.PICKED_UP);
+    }
+    if (deliveryStatus === ORDER_STATUS.PICKED_UP) {
+      goBack();
+      Alert.alert('Delivery Finished');
+    }
+  };
+
+  const renderButtonTitle = () => {
+    if (deliveryStatus === ORDER_STATUS.READY_FOR_PICKUP) {
+      return 'Accept Order';
+    }
+    if (deliveryStatus === ORDER_STATUS.ACCEPTED) {
+      return 'Pick-Up Order';
+    }
+    if (deliveryStatus === ORDER_STATUS.PICKED_UP) {
+      return 'Complete Delivery';
+    }
+  };
+
+  const isButtonDisabled = () => {
+    if (deliveryStatus === ORDER_STATUS.READY_FOR_PICKUP) {
+      return false;
+    }
+    if (deliveryStatus === ORDER_STATUS.ACCEPTED && isDriverClose) {
+      return false;
+    }
+    if (deliveryStatus === ORDER_STATUS.PICKED_UP && isDriverClose) {
+      return false;
+    }
+    return true;
+  };
+
   if (!driverLocation) {
     return (
       <View style={styles.loading}>
@@ -64,6 +158,7 @@ const OrderDelivery = (props: any) => {
     <SafeAreaView edges={['top']} style={styles.safe}>
       <View style={styles.screen}>
         <MapView
+          ref={mapRef}
           style={{width, height}}
           zoomEnabled={true}
           showsUserLocation={true}
@@ -75,13 +170,31 @@ const OrderDelivery = (props: any) => {
             longitudeDelta: 0.07,
           }}
           followsUserLocation={true}>
+          <MapViewDirections
+            strokeWidth={10}
+            strokeColor={Colors.green}
+            origin={driverLocation}
+            waypoints={
+              deliveryStatus === ORDER_STATUS.READY_FOR_PICKUP
+                ? [restaurantLocation]
+                : []
+            }
+            destination={
+              deliveryStatus === ORDER_STATUS.ACCEPTED
+                ? restaurantLocation
+                : deliveryLocation
+            }
+            apikey={'AIzaSyAbcVfeiTr0sdz1M8eCYzNeUKqyU4XDMIc'}
+            onReady={res => {
+              setIsDriverClose(res.distance <= 0.1);
+              setTotalMinutes(res.duration);
+              setTotalKm(res.distance);
+            }}
+          />
           <Marker
             title={order.Restaurant.name}
             description={order.Restaurant.address}
-            coordinate={{
-              latitude: order.Restaurant.lat,
-              longitude: order.Restaurant.lng,
-            }}>
+            coordinate={restaurantLocation}>
             <View
               style={{
                 backgroundColor: Colors.green,
@@ -108,13 +221,20 @@ const OrderDelivery = (props: any) => {
             </View>
           </Marker>
         </MapView>
-        <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
+        <BottomSheet index={1} ref={bottomSheetRef} snapPoints={snapPoints}>
           <View style={styles.bottomsheet}>
-            <Text style={styles.title}>14 min, 5km</Text>
+            <Text style={styles.title}>
+              {totalMinutes.toFixed(0)} min, {totalKm.toFixed(2)} km
+            </Text>
             <Text>Available Orders: {orders.length}</Text>
           </View>
           <View style={styles.contanier}>
-            <CustomButton title="Accept order" />
+            <CustomButton
+              color={isButtonDisabled() ? 'grey' : Colors.green}
+              disabled={isButtonDisabled()}
+              action={onButtonPressed}
+              title={renderButtonTitle()}
+            />
           </View>
         </BottomSheet>
       </View>
