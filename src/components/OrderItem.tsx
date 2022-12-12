@@ -1,12 +1,14 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text} from 'react-native';
+import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
 import Colors from '../constants/Colors';
 import Images from '../constants/Images';
 import {getScreenHeight} from '../utils/domUtils';
 
+import {navigate} from '../utils/routerServices';
+
 const OrderItem = (props: any) => {
   return (
-    <View style={styles.main}>
+    <Pressable onPress={() => navigate('OrderDelivery')} style={styles.main}>
       <Image source={{uri: props.item.Restaurant.image}} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.title} numberOfLines={2}>
@@ -21,7 +23,7 @@ const OrderItem = (props: any) => {
       <View style={styles.fotter}>
         <Image source={Images.check} style={styles.icon} />
       </View>
-    </View>
+    </Pressable>
   );
 };
 

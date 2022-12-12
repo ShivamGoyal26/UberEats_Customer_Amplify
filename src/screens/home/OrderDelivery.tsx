@@ -7,35 +7,25 @@ import orders from '../../../assets/data/orders.json';
 import {OrderItem} from '../../components';
 import Colors from '../../constants/Colors';
 import {getScreenHeight} from '../../utils/domUtils';
+import CustomButton from '../../components/CustomButton';
 
-const Orders = () => {
+const OrderDelivery = () => {
   const bottomSheetRef = useRef(null);
 
   // variables
   const snapPoints = useMemo(() => ['12%', '90%'], []);
 
-  const renderItem = ({item}: any) => {
-    return (
-      <View style={styles.item}>
-        <OrderItem item={item} />
-      </View>
-    );
-  };
-
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={styles.safe}>
       <View style={styles.screen}>
-        <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
+        <BottomSheet index={1} ref={bottomSheetRef} snapPoints={snapPoints}>
           <View style={styles.bottomsheet}>
-            <Text style={styles.title}>You are Online</Text>
+            <Text style={styles.title}>14 min, 5km</Text>
             <Text>Available Orders: {orders.length}</Text>
           </View>
-          <FlatList
-            data={orders}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={renderItem}
-            contentContainerStyle={styles.flatlist}
-          />
+          <View style={styles.contanier}>
+            <CustomButton title="Accept order" />
+          </View>
         </BottomSheet>
       </View>
     </SafeAreaView>
@@ -43,9 +33,13 @@ const Orders = () => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  safe: {
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  screen: {
+    flex: 1,
+    backgroundColor: 'lightblue',
   },
   flatlist: {
     padding: getScreenHeight(2),
@@ -54,7 +48,6 @@ const styles = StyleSheet.create({
     marginBottom: getScreenHeight(2),
   },
   bottomsheet: {
-    flex: 1,
     alignItems: 'center',
     marginVertical: getScreenHeight(1),
   },
@@ -63,6 +56,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 1,
   },
+  contanier: {
+    flex: 1,
+    padding: getScreenHeight(2),
+  },
 });
 
-export default Orders;
+export default OrderDelivery;
