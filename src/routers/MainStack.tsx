@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Auth, Hub} from 'aws-amplify';
+import {API, Auth, graphqlOperation, Hub} from 'aws-amplify';
+import {ActivityIndicator, Alert, View} from 'react-native';
 
+import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
 import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
-import {ActivityIndicator, Alert, View} from 'react-native';
 import {authContext} from '../contexts/context';
 
 const Stack = createNativeStackNavigator();
@@ -14,16 +16,37 @@ const MainStack = () => {
   const {user_data, setUserData, refetch, setRefetch}: any =
     useContext(authContext);
 
+  const syncUser = async (data: any) => {
+    if (data) {
+      const user: any = await API.graphql(
+        graphqlOperation(queries.getUser, {id: data.attributes.sub}),
+      );
+      if (!user.data.getUser) {
+        const newUSER = {
+          id: data.attributes.sub,
+          email: data.attributes.email,
+          address: data.attributes.address,
+          name: data.attributes.name,
+        };
+        const newCreatedUser = await API.graphql(
+          graphqlOperation(mutations.createUser, {
+            input: newUSER,
+          }),
+        );
+      }
+    }
+  };
+
   const retrieveCurrentSession = () => {
     setLoading(true);
-    Auth.currentAuthenticatedUser()
+    Auth.currentAuthenticatedUser({bypassCache: true})
       .then((data: any) => {
-        if (data) {
-          setUserData(data);
-        }
+        setUserData(data);
+        syncUser(data);
       })
       .catch(err => {
         setUserData(null);
+        Alert.alert(err.message);
       })
       .finally(() => {
         setLoading(false);

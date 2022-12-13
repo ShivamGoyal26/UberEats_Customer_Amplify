@@ -76,7 +76,7 @@
     "@aws-amplify/core" "5.0.5"
     tslib "^1.8.0"
 
-"@aws-amplify/core@5.0.5":
+"@aws-amplify/core@5.0.5", "@aws-amplify/core@^5.0.5":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-5.0.5.tgz#35ea7b632f687ebfcb91eac14d6f1f86ee7191f0"
   integrity sha512-x4dMMqzKetfvpJasxOiM7FpCmJqhdO51VDHoEepoBFmGa/wrepH1lXazzeUWzbT0LFgj5gnsHem67ig+GfFs4g==
@@ -91,7 +91,7 @@
     universal-cookie "^4.0.4"
     zen-observable-ts "0.8.19"
 
-"@aws-amplify/datastore@4.0.5":
+"@aws-amplify/datastore@4.0.5", "@aws-amplify/datastore@^4.0.5":
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/@aws-amplify/datastore/-/datastore-4.0.5.tgz#311246a57ed33bedd1543c7e8e3da97436e5547f"
   integrity sha512-JHbZDGXKLLIGJKWe1qP7ZODfTsSeY4vSrUy6tOfbs6/IGM4aUm8qCCGAvfjvY3v4P5AHX4vJdbPCU5btKwSX1A==

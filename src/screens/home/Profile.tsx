@@ -1,23 +1,16 @@
 import {Auth} from 'aws-amplify';
-import React, {useContext, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {CustomButton} from '../../components';
 import CustomHeader from '../../components/CustomHeader';
 import Colors from '../../constants/Colors';
 import {authContext} from '../../contexts/context';
 import {getScreenHeight} from '../../utils/domUtils';
+import {navigate} from '../../utils/routerServices';
 
 const Profile = () => {
   const {setUserData, user_data}: any = useContext(authContext);
-
-  console.log(user_data);
 
   const signout = async () => {
     try {
@@ -56,8 +49,23 @@ const Profile = () => {
           </TouchableOpacity>
           <View
             style={{
-              height: getScreenHeight(2),
+              height: getScreenHeight(4),
             }}
+          />
+          <CustomButton
+            color={Colors.green}
+            action={() => navigate('EditProfile')}
+            title="Edit Profile"
+          />
+          <View
+            style={{
+              height: getScreenHeight(4),
+            }}
+          />
+          <CustomButton
+            color={Colors.green}
+            action={() => navigate('ChangePassword')}
+            title="Change Password"
           />
         </View>
       </View>

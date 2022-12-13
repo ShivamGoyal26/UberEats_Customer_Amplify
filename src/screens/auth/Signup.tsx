@@ -16,7 +16,7 @@ const Signup = () => {
 
   const signUpManager = async () => {
     try {
-      const res = await Auth.signUp({
+      const res: any = await Auth.signUp({
         username: email,
         password: password,
         attributes: {
@@ -25,7 +25,7 @@ const Signup = () => {
         },
       });
       if (res) {
-        navigate('ConfirmationOTP', {data: res});
+        navigate('ConfirmationOTP', {email});
       }
     } catch (error: any) {
       Alert.alert(error.message);

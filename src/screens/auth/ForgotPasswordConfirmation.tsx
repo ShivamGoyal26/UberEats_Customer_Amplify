@@ -14,30 +14,35 @@ import CustomHeader from '../../components/CustomHeader';
 import CustomLoader from '../../components/CustomLoader';
 import Colors from '../../constants/Colors';
 import {getScreenHeight} from '../../utils/domUtils';
-import {navigate} from '../../utils/routerServices';
+import {navigate, popToTop} from '../../utils/routerServices';
 
-const ConfirmationOTP = (props: any) => {
+const ForgotPasswordConfirmation = (props: any) => {
   const email = props.route.params.email;
   const [resend, setResend] = useState(false);
 
   const [OTP, setOTP] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const confirmEmail = async () => {
+  const verifyForgotPassword = async () => {
+    setLoading(true);
     try {
-      const res = await Auth.confirmSignUp(email, OTP);
+      const res = await Auth.forgotPasswordSubmit(email, OTP, password);
       if (res) {
-        navigate('Login');
-        Alert.alert('Verify successfully, please login!');
+        Alert.alert('Password change');
+        popToTop();
       }
     } catch (error: any) {
       Alert.alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const resendConfirmationCode = async () => {
     setResend(true);
     try {
-      const res = await Auth.resendSignUp(email);
+      const res = await Auth.forgotPassword(email);
       if (res) {
         Alert.alert('code resent successfully');
       }
@@ -48,7 +53,7 @@ const ConfirmationOTP = (props: any) => {
     }
   };
 
-  if (resend) {
+  if (resend || loading) {
     return <CustomLoader />;
   }
 
@@ -71,6 +76,16 @@ const ConfirmationOTP = (props: any) => {
 
           <View style={{height: getScreenHeight(3)}} />
 
+          <TextInput
+            placeholder="Enter the Password"
+            placeholderTextColor={'grey'}
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
+          />
+
+          <View style={{height: getScreenHeight(3)}} />
+
           <TouchableOpacity onPress={resendConfirmationCode}>
             <Text>Resend Code</Text>
           </TouchableOpacity>
@@ -79,7 +94,7 @@ const ConfirmationOTP = (props: any) => {
           <CustomButton
             color={Colors.green}
             title="verify"
-            action={confirmEmail}
+            action={verifyForgotPassword}
           />
         </View>
       </View>
@@ -100,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationOTP;
+export default ForgotPasswordConfirmation;

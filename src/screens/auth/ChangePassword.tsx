@@ -11,43 +11,52 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CustomButton} from '../../components';
 import CustomHeader from '../../components/CustomHeader';
+import CustomLoader from '../../components/CustomLoader';
 import Colors from '../../constants/Colors';
 import {authContext} from '../../contexts/context';
 import {getScreenHeight} from '../../utils/domUtils';
-import {navigate} from '../../utils/routerServices';
+import {goBack, navigate} from '../../utils/routerServices';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
+const ChangePassword = () => {
+  const {user_data}: any = useContext(authContext);
+  const [loading, setLoading] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
   const [password, setPassword] = useState('');
-  const {setRefetch}: any = useContext(authContext);
 
-  const signIn = async () => {
+  const changePassword = async () => {
+    setLoading(true);
     try {
-      const res = await Auth.signIn(email, password);
+      const res = await Auth.changePassword(
+        user_data,
+        currentPassword,
+        password,
+      );
       if (res) {
-        setRefetch(true);
+        Alert.alert('Password changed successfully');
+        goBack();
       }
     } catch (error: any) {
-      if (error.message === 'User is not confirmed.') {
-        Alert.alert('Please verify first');
-        navigate('ConfirmationOTP', {email});
-      } else {
-        Alert.alert(error.message);
-      }
+      Alert.alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <CustomLoader />;
+  }
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.screen}>
-        <CustomHeader title="Login" />
+        <CustomHeader title="Change Password" />
         <View style={styles.contanier}>
           <TextInput
             autoCapitalize="none"
-            placeholder="Enter the email"
+            placeholder="Enter the Current Password"
             placeholderTextColor={'grey'}
-            value={email}
-            onChangeText={setEmail}
+            value={currentPassword}
+            onChangeText={setCurrentPassword}
             style={styles.input}
           />
           <View style={{height: getScreenHeight(3)}} />
@@ -58,18 +67,13 @@ const Login = () => {
             onChangeText={setPassword}
             style={styles.input}
           />
+
           <View style={{height: getScreenHeight(3)}} />
-          <TouchableOpacity onPress={() => navigate('Signup')}>
-            <Text style={{color: Colors.black}}>
-              Did not have account? Sign up
-            </Text>
-          </TouchableOpacity>
-          <View style={{height: getScreenHeight(3)}} />
-          <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
-            <Text style={{color: Colors.black}}>Forgot Password?</Text>
-          </TouchableOpacity>
-          <View style={{height: getScreenHeight(3)}} />
-          <CustomButton action={signIn} color={Colors.green} title="Login" />
+          <CustomButton
+            action={changePassword}
+            color={Colors.green}
+            title="Change Password"
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -89,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default ChangePassword;
