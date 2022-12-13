@@ -1,31 +1,31 @@
 import {Auth} from 'aws-amplify';
-import React, {useContext, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Text, TextInput, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CustomButton} from '../../components';
 import CustomHeader from '../../components/CustomHeader';
 import Colors from '../../constants/Colors';
-import {authContext} from '../../contexts/context';
 import {getScreenHeight} from '../../utils/domUtils';
 import {navigate} from '../../utils/routerServices';
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {setRefetch}: any = useContext(authContext);
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
 
-  const signIn = async () => {
+  const signUpManager = async () => {
     try {
-      const res = await Auth.signIn(email, password);
+      const res = await Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          address: address,
+          name: name,
+        },
+      });
       if (res) {
-        setRefetch(true);
+        navigate('ConfirmationOTP', {data: res});
       }
     } catch (error: any) {
       Alert.alert(error.message);
@@ -35,8 +35,17 @@ const Login = () => {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.screen}>
-        <CustomHeader title="Login" />
+        <CustomHeader title="Sign up" />
         <View style={styles.contanier}>
+          <View style={{height: getScreenHeight(3)}} />
+          <TextInput
+            placeholder="Enter the Name"
+            placeholderTextColor={'grey'}
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+          <View style={{height: getScreenHeight(3)}} />
           <TextInput
             autoCapitalize="none"
             placeholder="Enter the email"
@@ -54,13 +63,20 @@ const Login = () => {
             style={styles.input}
           />
           <View style={{height: getScreenHeight(3)}} />
-          <TouchableOpacity onPress={() => navigate('Signup')}>
-            <Text style={{color: Colors.black}}>
-              Did not have account? Sign up
-            </Text>
-          </TouchableOpacity>
+          <TextInput
+            placeholder="Enter the Address"
+            placeholderTextColor={'grey'}
+            value={address}
+            onChangeText={setAddress}
+            style={styles.input}
+          />
+
           <View style={{height: getScreenHeight(3)}} />
-          <CustomButton action={signIn} color={Colors.green} title="Login" />
+          <CustomButton
+            color={Colors.green}
+            title="Sign up"
+            action={signUpManager}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -80,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Signup;

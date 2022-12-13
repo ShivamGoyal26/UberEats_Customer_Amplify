@@ -3,11 +3,11 @@ import {StyleSheet, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Colors from '../../constants/Colors';
 
-const Home = () => {
+const Orders = () => {
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
       <View style={styles.screen}>
-        <Text>Chats</Text>
+        <Text>Orders</Text>
       </View>
     </SafeAreaView>
   );
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Orders;
