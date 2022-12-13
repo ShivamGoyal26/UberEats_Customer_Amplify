@@ -1,8 +1,6 @@
 import React, {useContext} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-import Orders from '../screens/home/Orders';
-import OrderDelivery from '../screens/home/OrderDelivery';
+import Home from '../screens/home/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -10,10 +8,9 @@ const HomeStack = () => {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Orders"
+        initialRouteName="Home"
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Orders" component={Orders} />
-        <Stack.Screen name="OrderDelivery" component={OrderDelivery} />
+        <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </>
   );
