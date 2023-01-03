@@ -11,6 +11,10 @@ const ResturantItem = (props: any) => {
         <Text numberOfLines={1} style={styles.title}>
           {props.item.name}
         </Text>
+        <View style = {styles.row}>
+        <Text style = {styles.subtitle}>Time: {props.item.minDeliveryTime} - {props.item.maxDeliveryTime} min</Text>
+        <Text style = {styles.subtitle}>Rating: {props.item.rating.toFixed(1)}</Text>
+        </View>
       </View>
     </View>
   );
@@ -34,6 +38,14 @@ const styles = StyleSheet.create({
   contanier: {
     padding: getScreenHeight(1),
   },
+  subtitle: {
+    color: Colors.black
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  }
 });
 
 export default memo(ResturantItem);

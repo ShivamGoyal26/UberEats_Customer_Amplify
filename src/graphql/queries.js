@@ -1,16 +1,118 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getAddress = /* GraphQL */ `
+  query GetAddress($id: ID!) {
+    getAddress(id: $id) {
+      id
+      address
+      lat
+      lng
+      userID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listAddresses = /* GraphQL */ `
+  query ListAddresses(
+    $filter: ModelAddressFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAddresses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        address
+        lat
+        lng
+        userID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncAddresses = /* GraphQL */ `
+  query SyncAddresses(
+    $filter: ModelAddressFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAddresses(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        address
+        lat
+        lng
+        userID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const addressesByUserID = /* GraphQL */ `
+  query AddressesByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAddressFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    addressesByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        address
+        lat
+        lng
+        userID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getBasket = /* GraphQL */ `
   query GetBasket($id: ID!) {
     getBasket(id: $id) {
       id
+      restaurantID
+      userID
       BasketDishes {
         nextToken
         startedAt
       }
-      userID
-      restaurantID
       createdAt
       updatedAt
       _version
@@ -28,8 +130,8 @@ export const listBaskets = /* GraphQL */ `
     listBaskets(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userID
         restaurantID
+        userID
         createdAt
         updatedAt
         _version
@@ -56,38 +158,8 @@ export const syncBaskets = /* GraphQL */ `
     ) {
       items {
         id
-        userID
         restaurantID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const basketsByUserID = /* GraphQL */ `
-  query BasketsByUserID(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelBasketFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    basketsByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
         userID
-        restaurantID
         createdAt
         updatedAt
         _version
@@ -116,8 +188,38 @@ export const basketsByRestaurantID = /* GraphQL */ `
     ) {
       items {
         id
-        userID
         restaurantID
+        userID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const basketsByUserID = /* GraphQL */ `
+  query BasketsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBasketFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    basketsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        restaurantID
+        userID
         createdAt
         updatedAt
         _version
@@ -234,6 +336,117 @@ export const orderDishesByOrderID = /* GraphQL */ `
         _deleted
         _lastChangedAt
         orderDishDishId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getBasketDish = /* GraphQL */ `
+  query GetBasketDish($id: ID!) {
+    getBasketDish(id: $id) {
+      id
+      quantity
+      Dish {
+        id
+        name
+        image
+        description
+        price
+        restaurantID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      basketID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      basketDishDishId
+    }
+  }
+`;
+export const listBasketDishes = /* GraphQL */ `
+  query ListBasketDishes(
+    $filter: ModelBasketDishFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBasketDishes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        quantity
+        basketID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        basketDishDishId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncBasketDishes = /* GraphQL */ `
+  query SyncBasketDishes(
+    $filter: ModelBasketDishFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncBasketDishes(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        quantity
+        basketID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        basketDishDishId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const basketDishesByBasketID = /* GraphQL */ `
+  query BasketDishesByBasketID(
+    $basketID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBasketDishFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    basketDishesByBasketID(
+      basketID: $basketID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        quantity
+        basketID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        basketDishDishId
       }
       nextToken
       startedAt
@@ -363,235 +576,21 @@ export const ordersByUserID = /* GraphQL */ `
     }
   }
 `;
-export const getBasketDish = /* GraphQL */ `
-  query GetBasketDish($id: ID!) {
-    getBasketDish(id: $id) {
-      id
-      quantity
-      Dish {
-        id
-        name
-        image
-        description
-        price
-        restaurantID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      basketID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      basketDishDishId
-    }
-  }
-`;
-export const listBasketDishes = /* GraphQL */ `
-  query ListBasketDishes(
-    $filter: ModelBasketDishFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listBasketDishes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        quantity
-        basketID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        basketDishDishId
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncBasketDishes = /* GraphQL */ `
-  query SyncBasketDishes(
-    $filter: ModelBasketDishFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncBasketDishes(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        quantity
-        basketID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        basketDishDishId
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const basketDishesByBasketID = /* GraphQL */ `
-  query BasketDishesByBasketID(
-    $basketID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelBasketDishFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    basketDishesByBasketID(
-      basketID: $basketID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        quantity
-        basketID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        basketDishDishId
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getAddress = /* GraphQL */ `
-  query GetAddress($id: ID!) {
-    getAddress(id: $id) {
-      id
-      content
-      lat
-      lng
-      userID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listAddresses = /* GraphQL */ `
-  query ListAddresses(
-    $filter: ModelAddressFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAddresses(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        content
-        lat
-        lng
-        userID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncAddresses = /* GraphQL */ `
-  query SyncAddresses(
-    $filter: ModelAddressFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAddresses(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        content
-        lat
-        lng
-        userID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const addressesByUserID = /* GraphQL */ `
-  query AddressesByUserID(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelAddressFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    addressesByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        content
-        lat
-        lng
-        userID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
       name
-      email
-      address
-      Addresses {
-        nextToken
-        startedAt
-      }
       Orders {
         nextToken
         startedAt
       }
       Baskets {
+        nextToken
+        startedAt
+      }
+      sub
+      Addresses {
         nextToken
         startedAt
       }
@@ -613,8 +612,7 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         name
-        email
-        address
+        sub
         createdAt
         updatedAt
         _version
@@ -642,8 +640,7 @@ export const syncUsers = /* GraphQL */ `
       items {
         id
         name
-        email
-        address
+        sub
         createdAt
         updatedAt
         _version

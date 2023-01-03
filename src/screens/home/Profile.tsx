@@ -1,7 +1,8 @@
-import {Auth} from 'aws-amplify';
+import {Auth, DataStore} from 'aws-amplify';
 import React, {useContext} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
 import {CustomButton} from '../../components';
 import CustomHeader from '../../components/CustomHeader';
 import Colors from '../../constants/Colors';
@@ -15,6 +16,7 @@ const Profile = () => {
   const signout = async () => {
     try {
       await Auth.signOut();
+
       setUserData(null);
     } catch (error: any) {
       Alert.alert(error.message);
@@ -66,6 +68,16 @@ const Profile = () => {
             color={Colors.green}
             action={() => navigate('ChangePassword')}
             title="Change Password"
+          />
+          <View
+            style={{
+              height: getScreenHeight(4),
+            }}
+          />
+          <CustomButton
+            color={Colors.green}
+            action={() => navigate('ManageAddress')}
+            title="Manage Address"
           />
         </View>
       </View>

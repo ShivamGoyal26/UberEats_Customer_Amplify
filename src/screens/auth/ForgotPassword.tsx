@@ -49,7 +49,7 @@ const ForgotPassword = () => {
         <View style={styles.contanier}>
           <TextInput
             autoCapitalize="none"
-            placeholder="Enter the Password"
+            placeholder="Enter the Email"
             placeholderTextColor={'grey'}
             value={email}
             onChangeText={setEmail}

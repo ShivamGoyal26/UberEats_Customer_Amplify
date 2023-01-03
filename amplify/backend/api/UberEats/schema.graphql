@@ -1,17 +1,16 @@
-type Basket @model @auth(rules: [{allow: public}]) {
+type Address @model @auth(rules: [{allow: public}]) {
   id: ID!
-  BasketDishes: [BasketDish] @hasMany(indexName: "byBasket", fields: ["id"])
+  address: String!
+  lat: String!
+  lng: String!
   userID: ID! @index(name: "byUser")
-  restaurantID: ID! @index(name: "byRestaurant")
 }
 
-enum OrderStatus {
-  NEW
-  COOKING
-  READY_FOR_PICKUP
-  PICKED_UP
-  COMPLETED
-  CANCELLED
+type Basket @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  restaurantID: ID! @index(name: "byRestaurant")
+  userID: ID! @index(name: "byUser")
+  BasketDishes: [BasketDish] @hasMany(indexName: "byBasket", fields: ["id"])
 }
 
 type OrderDish @model @auth(rules: [{allow: public}]) {
@@ -19,6 +18,13 @@ type OrderDish @model @auth(rules: [{allow: public}]) {
   quantity: Int!
   Dish: Dish @hasOne
   orderID: ID! @index(name: "byOrder")
+}
+
+type BasketDish @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quantity: Int!
+  Dish: Dish @hasOne
+  basketID: ID! @index(name: "byBasket")
 }
 
 type Order @model @auth(rules: [{allow: public}]) {
@@ -30,29 +36,21 @@ type Order @model @auth(rules: [{allow: public}]) {
   OrderDishes: [OrderDish] @hasMany(indexName: "byOrder", fields: ["id"])
 }
 
-type BasketDish @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  quantity: Int!
-  Dish: Dish @hasOne
-  basketID: ID! @index(name: "byBasket")
-}
-
-type Address @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  content: String!
-  lat: Float!
-  lng: Float!
-  userID: ID! @index(name: "byUser")
+enum OrderStatus {
+  NEW
+  COOKING
+  PICKED_UP
+  COMPLETED
+  READY_FOR_PICKUP
 }
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
-  email: String!
-  address: String!
-  Addresses: [Address] @hasMany(indexName: "byUser", fields: ["id"])
   Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
   Baskets: [Basket] @hasMany(indexName: "byUser", fields: ["id"])
+  sub: String!
+  Addresses: [Address] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
 type Dish @model @auth(rules: [{allow: public}]) {

@@ -1,6 +1,63 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createAddress = /* GraphQL */ `
+  mutation CreateAddress(
+    $input: CreateAddressInput!
+    $condition: ModelAddressConditionInput
+  ) {
+    createAddress(input: $input, condition: $condition) {
+      id
+      address
+      lat
+      lng
+      userID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateAddress = /* GraphQL */ `
+  mutation UpdateAddress(
+    $input: UpdateAddressInput!
+    $condition: ModelAddressConditionInput
+  ) {
+    updateAddress(input: $input, condition: $condition) {
+      id
+      address
+      lat
+      lng
+      userID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteAddress = /* GraphQL */ `
+  mutation DeleteAddress(
+    $input: DeleteAddressInput!
+    $condition: ModelAddressConditionInput
+  ) {
+    deleteAddress(input: $input, condition: $condition) {
+      id
+      address
+      lat
+      lng
+      userID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createBasket = /* GraphQL */ `
   mutation CreateBasket(
     $input: CreateBasketInput!
@@ -8,12 +65,12 @@ export const createBasket = /* GraphQL */ `
   ) {
     createBasket(input: $input, condition: $condition) {
       id
+      restaurantID
+      userID
       BasketDishes {
         nextToken
         startedAt
       }
-      userID
-      restaurantID
       createdAt
       updatedAt
       _version
@@ -29,12 +86,12 @@ export const updateBasket = /* GraphQL */ `
   ) {
     updateBasket(input: $input, condition: $condition) {
       id
+      restaurantID
+      userID
       BasketDishes {
         nextToken
         startedAt
       }
-      userID
-      restaurantID
       createdAt
       updatedAt
       _version
@@ -50,12 +107,12 @@ export const deleteBasket = /* GraphQL */ `
   ) {
     deleteBasket(input: $input, condition: $condition) {
       id
+      restaurantID
+      userID
       BasketDishes {
         nextToken
         startedAt
       }
-      userID
-      restaurantID
       createdAt
       updatedAt
       _version
@@ -154,6 +211,99 @@ export const deleteOrderDish = /* GraphQL */ `
       _deleted
       _lastChangedAt
       orderDishDishId
+    }
+  }
+`;
+export const createBasketDish = /* GraphQL */ `
+  mutation CreateBasketDish(
+    $input: CreateBasketDishInput!
+    $condition: ModelBasketDishConditionInput
+  ) {
+    createBasketDish(input: $input, condition: $condition) {
+      id
+      quantity
+      Dish {
+        id
+        name
+        image
+        description
+        price
+        restaurantID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      basketID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      basketDishDishId
+    }
+  }
+`;
+export const updateBasketDish = /* GraphQL */ `
+  mutation UpdateBasketDish(
+    $input: UpdateBasketDishInput!
+    $condition: ModelBasketDishConditionInput
+  ) {
+    updateBasketDish(input: $input, condition: $condition) {
+      id
+      quantity
+      Dish {
+        id
+        name
+        image
+        description
+        price
+        restaurantID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      basketID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      basketDishDishId
+    }
+  }
+`;
+export const deleteBasketDish = /* GraphQL */ `
+  mutation DeleteBasketDish(
+    $input: DeleteBasketDishInput!
+    $condition: ModelBasketDishConditionInput
+  ) {
+    deleteBasketDish(input: $input, condition: $condition) {
+      id
+      quantity
+      Dish {
+        id
+        name
+        image
+        description
+        price
+        restaurantID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      basketID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      basketDishDishId
     }
   }
 `;
@@ -277,156 +427,6 @@ export const deleteOrder = /* GraphQL */ `
     }
   }
 `;
-export const createBasketDish = /* GraphQL */ `
-  mutation CreateBasketDish(
-    $input: CreateBasketDishInput!
-    $condition: ModelBasketDishConditionInput
-  ) {
-    createBasketDish(input: $input, condition: $condition) {
-      id
-      quantity
-      Dish {
-        id
-        name
-        image
-        description
-        price
-        restaurantID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      basketID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      basketDishDishId
-    }
-  }
-`;
-export const updateBasketDish = /* GraphQL */ `
-  mutation UpdateBasketDish(
-    $input: UpdateBasketDishInput!
-    $condition: ModelBasketDishConditionInput
-  ) {
-    updateBasketDish(input: $input, condition: $condition) {
-      id
-      quantity
-      Dish {
-        id
-        name
-        image
-        description
-        price
-        restaurantID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      basketID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      basketDishDishId
-    }
-  }
-`;
-export const deleteBasketDish = /* GraphQL */ `
-  mutation DeleteBasketDish(
-    $input: DeleteBasketDishInput!
-    $condition: ModelBasketDishConditionInput
-  ) {
-    deleteBasketDish(input: $input, condition: $condition) {
-      id
-      quantity
-      Dish {
-        id
-        name
-        image
-        description
-        price
-        restaurantID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      basketID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      basketDishDishId
-    }
-  }
-`;
-export const createAddress = /* GraphQL */ `
-  mutation CreateAddress(
-    $input: CreateAddressInput!
-    $condition: ModelAddressConditionInput
-  ) {
-    createAddress(input: $input, condition: $condition) {
-      id
-      content
-      lat
-      lng
-      userID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateAddress = /* GraphQL */ `
-  mutation UpdateAddress(
-    $input: UpdateAddressInput!
-    $condition: ModelAddressConditionInput
-  ) {
-    updateAddress(input: $input, condition: $condition) {
-      id
-      content
-      lat
-      lng
-      userID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteAddress = /* GraphQL */ `
-  mutation DeleteAddress(
-    $input: DeleteAddressInput!
-    $condition: ModelAddressConditionInput
-  ) {
-    deleteAddress(input: $input, condition: $condition) {
-      id
-      content
-      lat
-      lng
-      userID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -435,17 +435,16 @@ export const createUser = /* GraphQL */ `
     createUser(input: $input, condition: $condition) {
       id
       name
-      email
-      address
-      Addresses {
-        nextToken
-        startedAt
-      }
       Orders {
         nextToken
         startedAt
       }
       Baskets {
+        nextToken
+        startedAt
+      }
+      sub
+      Addresses {
         nextToken
         startedAt
       }
@@ -465,17 +464,16 @@ export const updateUser = /* GraphQL */ `
     updateUser(input: $input, condition: $condition) {
       id
       name
-      email
-      address
-      Addresses {
-        nextToken
-        startedAt
-      }
       Orders {
         nextToken
         startedAt
       }
       Baskets {
+        nextToken
+        startedAt
+      }
+      sub
+      Addresses {
         nextToken
         startedAt
       }
@@ -495,17 +493,16 @@ export const deleteUser = /* GraphQL */ `
     deleteUser(input: $input, condition: $condition) {
       id
       name
-      email
-      address
-      Addresses {
-        nextToken
-        startedAt
-      }
       Orders {
         nextToken
         startedAt
       }
       Baskets {
+        nextToken
+        startedAt
+      }
+      sub
+      Addresses {
         nextToken
         startedAt
       }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {Amplify, Auth} from 'aws-amplify';
+import {Amplify} from 'aws-amplify';
 
 import {NavigationRef} from './src/utils/routerServices';
 import MainStack from './src/routers/MainStack';

@@ -5,13 +5,46 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 export enum OrderStatus {
   NEW = "NEW",
   COOKING = "COOKING",
-  READY_FOR_PICKUP = "READY_FOR_PICKUP",
   PICKED_UP = "PICKED_UP",
   COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED"
+  READY_FOR_PICKUP = "READY_FOR_PICKUP"
 }
 
 
+
+type EagerAddress = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Address, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly address: string;
+  readonly lat: string;
+  readonly lng: string;
+  readonly userID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyAddress = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Address, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly address: string;
+  readonly lat: string;
+  readonly lng: string;
+  readonly userID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Address = LazyLoading extends LazyLoadingDisabled ? EagerAddress : LazyAddress
+
+export declare const Address: (new (init: ModelInit<Address>) => Address) & {
+  copyOf(source: Address, mutator: (draft: MutableModel<Address>) => MutableModel<Address> | void): Address;
+}
 
 type EagerBasket = {
   readonly [__modelMeta__]: {
@@ -19,9 +52,9 @@ type EagerBasket = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly BasketDishes?: (BasketDish | null)[] | null;
-  readonly userID: string;
   readonly restaurantID: string;
+  readonly userID: string;
+  readonly BasketDishes?: (BasketDish | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -32,9 +65,9 @@ type LazyBasket = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly BasketDishes: AsyncCollection<BasketDish>;
-  readonly userID: string;
   readonly restaurantID: string;
+  readonly userID: string;
+  readonly BasketDishes: AsyncCollection<BasketDish>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -235,40 +268,6 @@ export declare const Restaurant: (new (init: ModelInit<Restaurant>) => Restauran
   copyOf(source: Restaurant, mutator: (draft: MutableModel<Restaurant>) => MutableModel<Restaurant> | void): Restaurant;
 }
 
-type EagerAddress = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Address, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly content: string;
-  readonly lat: number;
-  readonly lng: number;
-  readonly userID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyAddress = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Address, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly content: string;
-  readonly lat: number;
-  readonly lng: number;
-  readonly userID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Address = LazyLoading extends LazyLoadingDisabled ? EagerAddress : LazyAddress
-
-export declare const Address: (new (init: ModelInit<Address>) => Address) & {
-  copyOf(source: Address, mutator: (draft: MutableModel<Address>) => MutableModel<Address> | void): Address;
-}
-
 type EagerUser = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<User, 'id'>;
@@ -276,11 +275,10 @@ type EagerUser = {
   };
   readonly id: string;
   readonly name: string;
-  readonly email: string;
-  readonly address: string;
-  readonly Addresses?: (Address | null)[] | null;
   readonly Orders?: (Order | null)[] | null;
   readonly Baskets?: (Basket | null)[] | null;
+  readonly sub: string;
+  readonly Addresses?: (Address | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -292,11 +290,10 @@ type LazyUser = {
   };
   readonly id: string;
   readonly name: string;
-  readonly email: string;
-  readonly address: string;
-  readonly Addresses: AsyncCollection<Address>;
   readonly Orders: AsyncCollection<Order>;
   readonly Baskets: AsyncCollection<Basket>;
+  readonly sub: string;
+  readonly Addresses: AsyncCollection<Address>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

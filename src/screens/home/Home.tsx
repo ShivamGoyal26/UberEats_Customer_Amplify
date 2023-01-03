@@ -1,46 +1,40 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {API, graphqlOperation} from 'aws-amplify';
-import * as queries from '../../graphql/queries';
-import {DataStore} from '@aws-amplify/datastore';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, FlatList, TouchableOpacity, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { DataStore } from 'aws-amplify';
 
 import CustomHeader from '../../components/CustomHeader';
 import ResturantItem from '../../components/ResturantItem';
 import Colors from '../../constants/Colors';
-import {getScreenHeight} from '../../utils/domUtils';
+import { getScreenHeight } from '../../utils/domUtils';
 import CustomLoader from '../../components/CustomLoader';
 import NotFound from '../../components/NotFound';
-import {Restaurant} from '../../models';
+import { Restaurant } from '../../models';
 
-const Home = () => {
+const Home = (props: any) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const fetchRestaurants = async () => {
-    try {
-      const res: any = await API.graphql(
-        graphqlOperation(queries.listRestaurants),
-      );
-      if (res?.data?.listRestaurants?.items?.length) {
-        setData(res?.data?.listRestaurants?.items);
-      }
-    } catch (error) {
-      console.log('Error here', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   useEffect(() => {
-    fetchRestaurants();
+    const sub = DataStore.observeQuery(Restaurant).subscribe(({items}: any) => {
+      setData(items)
+      setLoading(false)
+    })
+
+    return () => {
+      sub.unsubscribe();
+    };
   }, []);
 
-  const renderItem = ({item}: any) => {
+
+
+  const renderItem = ({ item }: any) => {
     return (
-      <View style={styles.item}>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate("DishDetail", { item })}
+        style={styles.item}>
         <ResturantItem item={item} />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -49,7 +43,8 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView edges={['top']} style={styles.screen}>
+    <SafeAreaView edges={['top']} style={styles.safe}>
+      <StatusBar backgroundColor={Colors.green} barStyle = "light-content" />
       <View style={styles.screen}>
         <CustomHeader title="Restruants" />
         <FlatList
@@ -68,6 +63,10 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.background,
+  },
+  safe: {
+    flex: 1,
+    backgroundColor: Colors.green,
   },
   flatlist: {
     padding: getScreenHeight(2),

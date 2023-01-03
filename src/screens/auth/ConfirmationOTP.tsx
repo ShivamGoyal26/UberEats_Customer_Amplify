@@ -20,6 +20,7 @@ const ConfirmationOTP = (props: any) => {
   const email = props.route.params.email;
   const [resend, setResend] = useState(false);
 
+
   const [OTP, setOTP] = useState('');
 
   const confirmEmail = async () => {

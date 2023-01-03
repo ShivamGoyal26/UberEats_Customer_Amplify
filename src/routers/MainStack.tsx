@@ -1,13 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {API, Auth, graphqlOperation, Hub} from 'aws-amplify';
-import {ActivityIndicator, Alert, View} from 'react-native';
+import {API, Auth} from 'aws-amplify';
+import {ActivityIndicator, View} from 'react-native';
+import {DataStore} from '@aws-amplify/datastore';
 
-import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/queries';
 import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
 import {authContext} from '../contexts/context';
+import {User} from '../models';
+import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,23 +19,27 @@ const MainStack = () => {
     useContext(authContext);
 
   const syncUser = async (data: any) => {
-    if (data) {
-      const user: any = await API.graphql(
-        graphqlOperation(queries.getUser, {id: data.attributes.sub}),
-      );
-      if (!user.data.getUser) {
-        const newUSER = {
-          id: data.attributes.sub,
-          email: data.attributes.email,
-          address: data.attributes.address,
-          name: data.attributes.name,
-        };
-        const newCreatedUser = await API.graphql(
-          graphqlOperation(mutations.createUser, {
-            input: newUSER,
-          }),
-        );
+    try {
+      if (data) {
+        const user: any = await API.graphql({
+          query: queries.getUser,
+          variables: {id: data.attributes.sub},
+        });
+        if (!user.data.getUser) {
+          const mainUser = {
+            name: data.attributes.name,
+            sub: data.attributes.sub,
+            id: data.attributes.sub,
+          };
+          const res = await API.graphql({
+            query: mutations.createUser,
+            variables: {input: mainUser},
+          });
+          console.log('>>> RES', res);
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -46,7 +52,6 @@ const MainStack = () => {
       })
       .catch(err => {
         setUserData(null);
-        Alert.alert(err.message);
       })
       .finally(() => {
         setLoading(false);

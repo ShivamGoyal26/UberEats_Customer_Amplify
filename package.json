@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@aws-amplify/core": "^5.0.5",
-    "@aws-amplify/datastore": "^4.0.5",
+    "@azure/core-asynciterator-polyfill": "^1.0.2",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/netinfo": "^9.3.7",
